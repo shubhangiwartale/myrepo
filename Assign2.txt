@@ -1,0 +1,180 @@
+
+---
+PART B Ass 2 Perform the following operations using Python on the AirQuality / Heart Disease  data sets i) Data Cleaning ii)  Data Transformation iii) Data Integration iv) Error Correcting v) Model Building
+
+import pandas as pd
+
+df=pd.read_csv('AirQualityodisha.csv',delimiter=',')
+df
+
+df.describe
+
+df.columns
+
+df.shape
+
+#i) Data Cleaning ii)  Data Transformation
+
+df.isnull().sum()
+
+med=df['PM 2.5'].mean()
+newdf=df['PM 2.5'].fillna(med)
+
+print(newdf.isnull().sum())
+
+med
+
+#!pip install mysql-connector-python
+
+#Data integration
+import mysql.connector as con
+
+try:
+    mydb=con.connect(host='localhost',user='root',passwd='mysql123')
+    print(mydb.is_connected())
+    mydb.close()
+except Exception as e:
+    print(str(e))
+
+try:
+    mydb=con.connect(host='localhost',user='root',passwd='mysql123')
+    print(mydb.is_connected())
+    cursor=mydb.cursor() # cursor object is used to execute the SQL queries , it creates the pointer
+    query="show databases"
+    cursor.execute(query)
+    print(cursor.fetchall())
+    mydb.close()
+except Exception as e:
+    print(str(e))
+
+query='create table testin.demotab(rollno int(10),name VARCHAR(10), addr VARCHAR(50),section VARCHAR(10))'
+mydb=con.connect(host='localhost',user='root',passwd='mysql123')
+print(mydb.is_connected())
+cursor=mydb.cursor()
+cursor.execute(query)
+
+try:
+    mydb=con.connect(host='localhost',user='root',passwd='mysql123')
+    print(mydb.is_connected())
+    cursor=mydb.cursor() # cursor object is used to execute the SQL queries , it creates the pointer
+    query1="use testin"
+    cursor.execute(query1)
+    query2="show tables"
+    cursor.execute(query2)
+    print(cursor.fetchall())
+    mydb.close()
+except Exception as e:
+    print(str(e))
+
+try:
+    mydb=con.connect(host='localhost',database='newglass',user='root',passwd='mysql123')
+    print(mydb.is_connected())
+    cursor=mydb.cursor() 
+    query2="show databases"
+    cursor.execute(query2)
+    print(cursor.fetchall())
+    mydb.close()
+except Exception as e:
+    print(str(e))
+
+import mysql.connector as conn
+import pandas as pd
+import csv
+try:
+    mydb=conn.connect(host='localhost',user='root',passwd='mysql123',use_pure=True)
+    print(mydb.is_connected())
+    #query="create database glassdata1"
+    #cursor=mydb.cursor()
+    #cursor.execute(query)
+    #print("Database created")
+    mydb.close()
+    mydb=conn.connect(host="localhost",database='newglass',user='root',passwd='mysql123',use_pure=True)
+    query="create table if not exists glassdata11 (index_number INT(10),RI float (10,5),Na float(10,5),Mg float(10,5),Al float(10,5),Si float(10,5),K float(10,5),Ca float(10,5),Ba float(10,5),Fe float(10,5),Class int(10))"
+    
+    cursor=mydb.cursor()
+    cursor.execute(query)
+    print('table created')
+    #load the data from file to database 
+    with open('glass.data',"r") as f:
+        next(f)
+        glass_data=csv.reader(f,delimiter="\n")
+        print(type(glass_data))
+        for line in enumerate(glass_data):
+            print(line)
+            for list_ in (line[1]):
+                print(list_)
+                cursor.execute('insert into glassdata11 values ({values})'.format(values=list_))
+        print("values inserted")
+        mydb.commit()
+        cursor.close()
+        mydb.close()
+except Exception as e:
+    print(str(e))
+
+import mysql.connector as con
+import pandas as pd
+try:
+    mydb=con.connect(host='localhost',database='newglass',user='root',passwd='mysql123',use_pure=True)
+    cursor=mydb.cursor()
+    query1="use newglass"
+    cursor.execute(query1)
+    query="select * from glassdata11;"
+        
+    dataframe_result=pd.read_sql(query,mydb)
+    print(dataframe_result)
+    #mydb.close()
+except Exception as e:
+    print(str(e))
+
+import mysql.connector as con
+import pandas as pd
+try:
+    mydb=con.connect(host='localhost',database='newglass',user='root',passwd='mysql123',use_pure=True)
+    cursor=mydb.cursor()
+    query1="use newglass"
+    cursor.execute(query1)
+    query="select Si,Count(Si),Class from newglass.glassdata11 group by Class order by Si;"
+
+    dataframe_result=pd.read_sql(query,mydb)
+    print(dataframe_result)
+    #mydb.close()
+except Exception as e:
+    print(str(e))
+
+import sqlite3
+
+db=sqlite3.connect('sample.db')
+
+c=db.cursor()
+
+c.execute('create table company1(id int,name text, age int,addr text,salary real)')
+
+c.execute("insert into company1 values(1,'vsk',40,'sfdsf',90000)")
+
+c.execute("insert into company1 values(2,'vsk2',32,'sfdsf',93000)")
+
+data=c.execute("select * from company1")
+
+for record in data:
+    print(record)
+
+#error correction
+df=pd.read_csv('AirQualityodisha.csv',delimiter=',')
+df_wna = df.dropna(subset=['PM 2.5'])
+x=df['PM 2.5'].isnull().sum()
+print("Total number of null values "+ str(x))
+
+
+df
+
+x=df_wna['PM 2.5'].isnull().sum()
+print("Total number of null values "+ str(x))
+
+df.columns
+
+df['so2_total']=df.groupby('City')['SO2'].transform('sum')
+
+df.columns
+
+df
+

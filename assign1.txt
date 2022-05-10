@@ -1,0 +1,190 @@
+"""1.Perform the following operations using Python on the Facebook metrics data sets
+a. Create data subsets
+b. Merge Data
+c. Sort Data
+d. Transposing Data
+e. Shape and reshape Data"""
+
+import pandas as pd
+
+df = pd.read_csv('dataset_Facebook.csv',delimiter=';')
+
+df.describe()
+
+df.shape
+
+df.info()
+
+df.columns
+
+df.head(10)
+
+subset1=df[10:40]
+
+subset1
+
+df.iloc[3:5] # row no 3 & 4 extracted
+
+df.iloc[:5] # extract first 5 rows
+
+df.iloc[:3,1:4] # first 3 rows for column 1,2,3
+
+df.iloc[[2,5,6]] # extract row 2,5,6
+
+df.iloc[:,2]
+
+df.loc[[2,4,5],['Type','Category']]
+
+df['Category']==3
+
+
+df.loc[df['Category']==3]
+
+df[df['Category']==3]
+
+df[df['Lifetime Engaged Users']>500]
+
+
+
+df[(df['Lifetime Post Consumptions']<1000 ) & (df['Paid']==0.0)]
+
+df1=pd.DataFrame({'A':['A0','A1','A2','A3'],
+                  'B':['B0','B1','B2','B3'],
+                   'C':['C0','C1','C2','C3'],
+                   'D':['D0','D1','D2','D3']
+                  
+                    })
+
+df1
+
+df2=pd.DataFrame({'A':['A4','A5','A6','A7'],
+                  'B':['B4','B5','B6','B7'],
+                   'C':['C4','C5','C6','C7'],
+                   'D':['D4','D5','D6','D7']
+                  
+                    })
+
+df3=pd.DataFrame({'A':['A8','A9','A10','A11'],
+                  'B':['B8','B9','B10','B11'],
+                   'C':['C8','C9','C10','C11'],
+                   'D':['D8','D9','D10','D11']
+                  
+                    })
+
+df2
+
+df3
+
+pd.concat([df1,df2,df3], ignore_index=True)
+
+pd.concat([df1,df2,df3],axis=1)
+
+left=pd.DataFrame({'key':['k0','k1','k2','k3'],
+                  'A':['A0','A1','A2','A3'],
+                  'B':['B0','B1','B2','B3']})
+right=pd.DataFrame({'key':['k0','k1','k2','k4'],
+                  'C':['C0','C1','C2','C3'],
+                  'D':['D0','D1','D2','D3']})
+
+left
+
+right
+
+pd.merge(left,right,how='inner',on='key')
+
+left1=pd.DataFrame({'key1':['k0','k0','k1','k2'],
+                   'key2':['k0','k1','k0','k1'],
+                  'A':['A0','A1','A2','A3'],
+                  'B':['B0','B1','B2','B3']})
+
+right1=pd.DataFrame({'key1':['k0','k1','k1','k2'],
+                    'key2':['k0','k0','k0','k0'],
+                  'C':['C0','C1','C2','C3'],
+                  'D':['D0','D1','D2','D3']})
+
+pd.merge(left1,right1,how='inner',on=['key1','key2'])
+
+pd.merge(left1,right1,how='outer',on=['key1','key2'])
+
+pd.merge(left1,right1,how='left',on=['key1','key2'])
+
+pd.merge(left1,right1,how='right',on=['key1','key2'])
+
+# create two dataframes for facebook dataset with common column 
+ldataset=df.iloc[:,0:10]
+rdataset=df.iloc[:,9:20]
+ldataset.head(5)
+
+
+rdataset.head(5)
+
+merge_result=pd.merge(ldataset,rdataset, on='Lifetime Engaged Users')
+
+merge_result.shape
+
+merge_result.shape
+
+merge_result1=pd.merge(ldataset,rdataset[['Lifetime Engaged Users','Lifetime Post Consumers']], on='Lifetime Engaged Users')
+
+merge_result1
+
+common_values=ldataset['Lifetime Engaged Users'].isin(rdataset['Lifetime Engaged Users']).value_counts()
+
+print(common_values)
+
+leftjoin=pd.merge(ldataset,rdataset[['Lifetime Engaged Users','Lifetime Post Consumers']],how='left')
+
+leftjoin.head()
+
+
+rightjoin=pd.merge(ldataset,rdataset[['Lifetime Engaged Users','Lifetime Post Consumers']],how='right')
+
+rightjoin
+
+
+rightjoin=pd.merge(ldataset,rdataset[['Lifetime Engaged Users','Lifetime Post Consumers']],how='right')
+
+innerjoin=pd.merge(ldataset,rdataset[['Lifetime Engaged Users','Lifetime Post Consumers']],how='inner')
+
+outerjoin=pd.merge(ldataset,rdataset[['Lifetime Engaged Users','Lifetime Post Consumers']],how='outer')
+
+# sort
+
+sd=df.sort_values('Lifetime Post Total Reach')
+
+sd.head()
+
+df.head()
+
+sd1=df.sort_values('Lifetime Post Total Reach',ascending=False)
+
+sd1.head()
+
+sd1.sort_values('Lifetime Post Total Reach',inplace=True)
+
+sd1
+
+transdf=df.T
+print(transdf)
+
+import numpy as np
+ds=np.array([1,2,3,4,5,6])
+ds.shape
+
+ds1=ds.reshape(3,2)
+
+ds1
+
+
+df.shape
+
+transData=df.T
+print(transData)
+
+#!pip install mysql-connector-python
+
+import mysql.connector as con
+
+# establish connection with mysql
+
+    

@@ -1,0 +1,103 @@
+## Gruop B
+### Assingment 4
+Name: Pranav Dandgaval
+T21136
+Dv: 1
+
+""" Visualize the data using Python libraries matplotlib,seaborn by plotting the graphs for assignment
+no. 2 and 3 ( Group B)"""
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+df=pd.read_csv('heart.csv')
+df
+
+df.info()
+
+df.info()
+
+df.columns
+
+df=df.drop('Unnamed: 0',axis=1)
+
+df
+
+df['AHD']=df['AHD'].replace({"Yes":1,"No":0})
+
+df
+
+df['Sex'].plot(kind='hist')
+
+sns.countplot(df["Sex"])
+
+fig=plt.figure(figsize=(20,10))
+sns.boxplot(data = df,notch = True,linewidth = 2.5, width = 0.50)
+plt.show()
+
+df.plot(subplots=True,sharex=False,layout=(6,2),figsize=(16,8))
+plt.tight_layout() # 2 rows and 3 cols
+
+df.plot.hist()
+
+df.plot(kind='box', subplots=True, layout=(2,7), sharex=False,sharey=False, figsize=(20, 10), 
+color='red');
+
+sns.boxplot(x='AHD', y='Oldpeak', data=df)
+
+df['Age'].hist().plot(kind='bar')
+plt.title('Age Distribution')
+
+print(df.Age.value_counts()[:10])
+sns.barplot(x=df.Age.value_counts()[:10].index,
+y=df.Age.value_counts()[:10].values,
+palette='Set2')
+plt.xlabel('Age')
+plt.ylabel('Age distribution')
+
+ #Gender distribution according to target variable
+#fig, ax = plt.subplots(figsize=(8,5))
+name = df['Sex']
+ax = sns.countplot(x='Sex', hue='AHD', data=df, palette='Set2')
+
+
+fig, ax = plt.subplots(figsize=(10,5))
+name = df['ChestPain']
+ax = sns.countplot(x='ChestPain', hue='AHD', data=df, palette='Set2')
+#ax.set_title("Chest Pain Distribution according to Target", fontsize = 13, weight = 'bold')
+#ax.set_xticklabels (name,rotation =303)
+
+minAge =min(df["Age"])
+maxAge =max(df["Age"])
+avgAge = (df["Age"]).mean()
+print("Minimum age:",minAge)
+print("Maximum age:",maxAge)
+print("Average age:",avgAge)
+
+Young_age = df[(df.Age>=29)&(df.Age<40)]
+Meddle_age = df[(df.Age>=40)&(df.Age<55)]
+Elderly_age = df[(df.Age>55)]
+
+sns.barplot(x = ["Young ages","Meddle Ages","Elderly ages"], y =[len(Young_age),len(Meddle_age),len(Elderly_age)], color = "red")
+
+f,ax=plt.subplots(1,2,figsize=(10,6))
+df["AHD"].value_counts().plot.pie(ax = ax[0],autopct='%1.1f%%')
+sns.countplot('AHD',data=df,ax=ax[1],order=df['Sex'].value_counts().index)
+
+f,ax=plt.subplots(1,2,figsize=(10,6))
+df["ChestPain"].value_counts().plot.pie(ax = ax[0],autopct='%1.1f%%')
+sns.countplot('ChestPain',data=df,ax=ax[1],order=df['Sex'].value_counts().index)
+
+
+sns.countplot(df["AHD"])
+
+corr = df.corr()
+corr
+
+plt.figure(figsize =(20,15))
+sns.heatmap(corr,annot= True)
+
